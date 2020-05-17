@@ -1,11 +1,14 @@
+import time
+import progressbar 
+
 data = []
 count = 0
+bar = progressbar.ProgressBar(max_value=1000000) #物件非function，這是用class發明progressbar資料型別
 with open ('reviews.txt', 'r')as f:
 	for line in f:
 		data.append(line)
 		count += 1
-		if count % 1000 ==0: # %是餘數
-			print(len(data))
+		bar.update(count)
 print('檔案讀取完囉，總共有', len(data), '筆資料')
 
 sum_len = 0
@@ -29,10 +32,11 @@ print('一共有', len(good), '筆留言提到good')
 print(good[69])
 
 
-bad = ['bad' in d for d in data ]
-print(bad)
+# bad = ['bad' in d for d in data ]
+# print(bad)
 
 #文字計數
+start_time = time.time()
 wc = {}
 for d in data:
 	words = d.split() #split預設值是空白鍵
@@ -45,9 +49,10 @@ for d in data:
 for word in wc: #把單字一字一行的印出來
 	if wc[word] > 1000000:
 		print(word, wc[word])
-print(len(wc)) #知道有幾個key
-
-print(wc['Sally'])
+end_time = time.time()
+print('花了',end_time - start_time, '秒' )
+print('一共有', len(wc), '不重複單字') #知道有幾個key
+print('Sally被提到', wc['Sally'], '次')
 
 while True:
 	word = input('請輸入你想查的字：')
